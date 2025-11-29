@@ -34,7 +34,7 @@ public class FileClient{
         out.println(fileName);
         out.println(fileSize);
 
-        System.out.println("Sending file: " + fileName + " size: " + fileSize);
+        System.out.println("Sending file: " + fileName + " size: " + fileSize + " bytes");
 
         //Sending file content
         Scanner inp = new Scanner(file);
