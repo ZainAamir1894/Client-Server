@@ -1,0 +1,52 @@
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class FileClient{
+    public static void main(String[] args) throws Exception {
+        Socket clientSocket = new Socket("localhost" , 9090);
+
+
+        //Global I/O Streams
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+
+        //Asking user for file Info
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter file path: ");
+        String filePath = sc.nextLine();
+
+        //File Class that gets the file path
+        File file = new File(filePath);
+
+
+        if(!file.exists()){
+            System.out.println("File not found");
+            clientSocket.close();
+            return;
+        }
+
+        //getName and length methods for file's name and size and sending to server
+        String fileName = file.getName();
+        long fileSize = file.length();
+
+        out.println(fileName);
+        out.println(fileSize);
+
+        System.out.println("Sending file: " + fileName + " size: " + fileSize);
+
+        //Sending file content
+        Scanner inp = new Scanner(file);
+        while(inp.hasNextLine()){
+            String line = inp.nextLine();
+            out.println(line);
+        }
+
+        String response;
+        while((response = in.readLine()) != null){
+            System.out.println(response);
+        }
+
+    }
+}
